@@ -1,8 +1,9 @@
 import google.generativeai as genai
 
-genai.configure(api_key="Insert your API key")
+genai.configure(api_key="Enter your API key")
 
 model = genai.GenerativeModel("gemini-2.5-flash")
+chat_history = []
 
 print("📚 Engineering Study Buddy")
 print("Type 'exit' to quit")
@@ -14,19 +15,18 @@ while True:
         print("Bot: Goodbye!")
         break
 
+    chat_history.append(f"User: {user_input}")
+
     prompt = f"""
 You are an Engineering Study Buddy.
 
-Help engineering students understand concepts clearly.
+Conversation History:
+{chr(10).join(chat_history)}
 
-Rules:
-- Explain in simple language.
-- Give practical examples.
-- Include formulas when needed.
-- Be suitable for undergraduate engineering students.
-
-Question:
-{user_input}
+Answer the latest question clearly.
+Use simple language.
+Use examples when possible.
+Suitable for undergraduate engineering students.
 """
 
     try:
@@ -34,6 +34,8 @@ Question:
 
         print("\nBot:")
         print(response.text)
+
+        chat_history.append(f"Bot: {response.text}")
 
     except Exception as e:
         print("Error:", e)
